@@ -25,6 +25,10 @@ public class UserInfoModel {
     String email;
     String phone;
 
-    @ManyToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "user")
     private Set<AddressModel> addresses = new HashSet<>();
+
+    public void addAddress(AddressModel address) {
+        this.addresses.add(address);
+    }
 }

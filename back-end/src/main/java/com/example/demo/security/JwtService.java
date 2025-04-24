@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.UUID;
 import java.util.function.Function;
 
 @Component
@@ -40,6 +41,10 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody();
         return claimsResolver.apply(claims);
+    }
+
+    public UUID extractUserId(String token) {
+        return UUID.fromString(extractClaim(token, Claims::getId));
     }
 
     public boolean isTokenValid(String token, String username) {
