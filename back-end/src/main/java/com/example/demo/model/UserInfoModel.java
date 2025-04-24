@@ -6,6 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 @Entity
 @Table(name = "user_info")
 @Getter
@@ -14,10 +18,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserInfoModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    UUID id;
     String password;
     String name;
     String email;
     String phone;
+
+    @ManyToMany(mappedBy = "users")
+    private Set<AddressModel> addresses = new HashSet<>();
 }

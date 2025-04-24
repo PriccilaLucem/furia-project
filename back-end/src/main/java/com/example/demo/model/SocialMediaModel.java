@@ -28,7 +28,4 @@ public class SocialMediaModel {
     String plataformasFavoritas;
     Boolean seguindoFuriaNasRedes;
     String interacoesRecentes;
-
-    @ManyToMany(mappedBy = "users")
-    private Set<AddressModel> addresses = new HashSet<>();
 }
