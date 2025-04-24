@@ -24,6 +24,10 @@ public class UserInfoService {
         return userInfoRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
+    public UserInfoModel getByEmail(String email) {
+        return userInfoRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
     public List<UserInfoModel> getAllUsers() {
         return userInfoRepository.findAll();
     }
