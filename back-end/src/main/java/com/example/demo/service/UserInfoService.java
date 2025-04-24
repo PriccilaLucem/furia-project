@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.model.UserInfoModel;
 import com.example.demo.repository.UserInfoRepository;
+import com.example.demo.util.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ public class UserInfoService {
 
     public UUID createUser(UserInfoModel userInfoModel) {
         validateUser(userInfoModel);
+        userInfoModel.setPassword(Authorization.hashPassword(userInfoModel.getPassword()));
         return userInfoRepository.save(userInfoModel).getId();
     }
 
