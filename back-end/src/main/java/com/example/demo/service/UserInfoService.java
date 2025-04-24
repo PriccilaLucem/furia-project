@@ -24,6 +24,10 @@ public class UserInfoService {
         return userInfoRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
+    public UserInfoModel getByEmail(String email) {
+        return userInfoRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
     public List<UserInfoModel> getAllUsers() {
         return userInfoRepository.findAll();
     }
@@ -41,10 +45,10 @@ public class UserInfoService {
         if(userInfoModel.getPhone() == null || userInfoModel.getPhone().isEmpty()) {
             throw new RuntimeException("Phone cannot be empty");
         }
-        if (!userInfoModel.getPhone().matches("^(\\+55\\s?)?\\(?\\d{2}\\)?\\s?(9\\d{4}|\\d{4})-?\\d{4}$\n")) {
+        if (!userInfoModel.getPhone().matches("^(\\+55\\s?)?\\(?\\d{2}\\)?\\s?(9\\d{4}|\\d{4})-?\\d{4}$")) {
             throw new RuntimeException("Invalid phone number");
         }
-        if (!userInfoModel.getEmail().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\n")){
+        if (!userInfoModel.getEmail().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")){
             throw new RuntimeException("Invalid email");
         }
     }
