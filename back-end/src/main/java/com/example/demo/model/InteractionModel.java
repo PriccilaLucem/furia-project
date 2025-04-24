@@ -17,11 +17,11 @@ public class InteractionModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    String eventosParticipados;
-
-    Boolean compraProdutosOficiais;
-    String BoughtItems;
+    Boolean alreadyWentToFuriaEvent;
+    Boolean BoughtItems;
     Boolean eFuriaClubMember;
-    Integer nivelEngajamento;
+    Integer memberLevel;
 
+    @OneToOne
+    private UserInfoModel userInfo;
 }

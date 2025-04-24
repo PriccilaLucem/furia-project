@@ -28,6 +28,9 @@ public class UserInfoModel {
     @OneToOne(cascade = CascadeType.ALL)
     private SocialMediaModel socialMedia;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userInfo")
+    private InteractionModel interaction;
+
     @OneToMany(mappedBy = "user")
     private Set<AddressModel> addresses = new HashSet<>();
 

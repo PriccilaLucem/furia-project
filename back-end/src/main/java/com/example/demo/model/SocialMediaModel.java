@@ -23,7 +23,6 @@ public class SocialMediaModel {
     String steamUsername;
     String riotUsername;
     Boolean followingFuria;
-    String recentInteractions;
 
     @OneToOne
     private UserInfoModel userInfo;
