@@ -24,12 +24,8 @@ public class AddressModel {
     private String state;
     private String zip;
     private String country;
-    @ManyToMany
-    @JoinTable(
-            name = "user_address",
-            joinColumns = @JoinColumn(name = "address_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<UserInfoModel> users = new ArrayList<>();
+
+    @ManyToOne
+    private  UserInfoModel user;
 
 }

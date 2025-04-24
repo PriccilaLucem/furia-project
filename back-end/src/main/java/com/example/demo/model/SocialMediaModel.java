@@ -6,9 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
 @Table(name = "social_media")
 @AllArgsConstructor
@@ -25,7 +22,9 @@ public class SocialMediaModel {
     String twitchUsername;
     String steamUsername;
     String riotUsername;
-    String plataformasFavoritas;
-    Boolean seguindoFuriaNasRedes;
-    String interacoesRecentes;
+    Boolean followingFuria;
+    String recentInteractions;
+
+    @OneToOne
+    private UserInfoModel userInfo;
 }
