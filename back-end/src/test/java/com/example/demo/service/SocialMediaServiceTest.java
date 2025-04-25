@@ -27,6 +27,9 @@ public class SocialMediaServiceTest {
     @InjectMocks
     private SocialMediaService socialMediaService;
 
+    @Mock
+    private FanScoreService fanScoreService;
+
     @Test
     void shouldCreateSocialMediaSuccessfully() {
         UUID userId = UUID.randomUUID();
@@ -43,13 +46,12 @@ public class SocialMediaServiceTest {
 
         when(userInfoRepository.findById(userId)).thenReturn(Optional.of(userInfo));
         when(socialMediaRepository.save(socialMediaModel)).thenReturn(savedSocial);
-
+        when(fanScoreService.updateFanScore(any(UserInfoModel.class))).thenReturn(10);
         Long resultId = socialMediaService.create(socialMediaModel, userId);
 
         assertEquals(socialId, resultId);
         verify(userInfoRepository).findById(userId);
         verify(socialMediaRepository).save(socialMediaModel);
-        verify(userInfoRepository).save(userInfo);
     }
 
     @Test

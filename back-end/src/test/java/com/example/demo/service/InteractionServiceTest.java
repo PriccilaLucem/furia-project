@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -51,11 +50,9 @@ public class InteractionServiceTest {
 
         Long resultId = interactionService.createInteractionService(interactionModel, userId);
 
-        // Verifica se a interação foi associada ao usuário
         assertEquals(interactionId, resultId);
         assertEquals(interactionModel, user.getInteraction());
 
-        // Verifica se o update de fan score foi chamado
         verify(fanScoreService, times(1)).updateFanScore(user);
         verify(userInfoRepository, times(1)).findById(userId);
         verify(interactionRepository, times(1)).save(interactionModel);
