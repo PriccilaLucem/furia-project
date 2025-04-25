@@ -25,6 +25,8 @@ public class UserInfoModel {
     String email;
     String phone;
 
+    private Integer fansScore = 0;
+
     @OneToOne(cascade = CascadeType.ALL)
     private SocialMediaModel socialMedia;
 

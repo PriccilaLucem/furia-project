@@ -20,7 +20,6 @@ public class InteractionModel {
     Boolean alreadyWentToFuriaEvent;
     Boolean BoughtItems;
     Boolean eFuriaClubMember;
-    Integer memberLevel;
 
     @OneToOne
     private UserInfoModel userInfo;

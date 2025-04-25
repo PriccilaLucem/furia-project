@@ -17,11 +17,15 @@ public class SocialMediaService {
     @Autowired
     private UserInfoRepository userInfoRepository;
 
+    @Autowired
+    private FanScoreService fanScoreService;
+
     public Long create(SocialMediaModel socialMediaModel, UUID userId) {
         UserInfoModel userInfoModel = userInfoRepository.findById(userId).orElseThrow(() -> new RuntimeException("User Not Found"));
         SocialMediaModel createdSocial = socialMediaRepository.save(socialMediaModel);
         userInfoModel.setSocialMedia(createdSocial);
-        userInfoRepository.save(userInfoModel);
+        fanScoreService.updateFanScore(userInfoModel);
+
         return createdSocial.getId();
     }
 }
