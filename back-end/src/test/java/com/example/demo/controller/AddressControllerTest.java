@@ -37,7 +37,6 @@ public class AddressControllerTest {
         String token = "Bearer fake-jwt-token";
 
         AddressModel address = new AddressModel();
-        address.setStreet("Rua Teste");
         address.setCity("Cidade");
         address.setState("Estado");
         address.setZip("00000-000");

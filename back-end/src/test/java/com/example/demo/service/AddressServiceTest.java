@@ -33,7 +33,6 @@ public class AddressServiceTest {
         Long generatedAddressId = 10L;
 
         AddressModel address = new AddressModel();
-        address.setStreet("Rua Teste");
 
         AddressModel savedAddress = new AddressModel();
         savedAddress.setId(generatedAddressId);
