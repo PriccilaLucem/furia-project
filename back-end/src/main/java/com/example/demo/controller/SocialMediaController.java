@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 
 import com.example.demo.model.SocialMediaModel;
-import com.example.demo.security.JwtService;
+import com.example.demo.config.security.JwtService;
 import com.example.demo.service.SocialMediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.LoginDTO;
 import com.example.demo.model.UserInfoModel;
-import com.example.demo.security.JwtService;
+import com.example.demo.config.security.JwtService;
 import com.example.demo.service.UserInfoService;
 import com.example.demo.util.Authorization;
 import org.junit.jupiter.api.Test;

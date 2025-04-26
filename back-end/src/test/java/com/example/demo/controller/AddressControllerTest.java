@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.AddressModel;
-import com.example.demo.security.JwtService;
+import com.example.demo.config.security.JwtService;
 import com.example.demo.service.AddressService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

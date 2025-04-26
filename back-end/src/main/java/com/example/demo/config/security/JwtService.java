@@ -1,4 +1,4 @@
-package com.example.demo.security;
+package com.example.demo.config.security;
 
 import com.example.demo.model.UserInfoModel;
 import io.jsonwebtoken.*;
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -24,6 +25,7 @@ public class JwtService {
                 .setSubject(user.getEmail())
                 .setId(user.getId().toString())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setClaims(Map.of("role", "ROLE_USER"))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 horas
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
@@ -47,10 +49,23 @@ public class JwtService {
         return UUID.fromString(extractClaim(token, Claims::getId));
     }
 
-    public boolean isTokenValid(String token, String username) {
-        final String tokenUsername = extractUsername(token);
-        return (tokenUsername.equals(username) && !isTokenExpired(token));
+    public boolean isTokenValid(String token) {
+        try {
+            extractAllClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
 
     private boolean isTokenExpired(String token) {
         return extractClaim(token, Claims::getExpiration).before(new Date());
