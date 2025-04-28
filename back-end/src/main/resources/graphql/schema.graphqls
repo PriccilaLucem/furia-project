@@ -1,0 +1,37 @@
+type Query {
+    userInfo(fansScoreMin: Int, fansScoreMax: Int, city: String, alreadyWentToFuriaEvent: Boolean, boughtItems: Boolean, eFuriaClubMember: Boolean): [UserInfo]
+}
+
+type UserInfo {
+    id: ID!
+    name: String
+    email: String
+    phone: String
+    fansScore: Int
+    socialMedia: SocialMedia
+    interaction: Interaction
+    addresses: [Address]
+}
+
+type SocialMedia {
+    twitterHandle: String
+    instagramHandle: String
+    tiktokHandle: String
+    twitchUsername: String
+    steamUsername: String
+    riotUsername: String
+    followingFuria: Boolean
+}
+
+type Interaction {
+    alreadyWentToFuriaEvent: Boolean
+    boughtItems: Boolean
+    eFuriaClubMember: Boolean
+}
+
+type Address {
+    city: String
+    state: String
+    zip: String
+    country: String
+}
