@@ -21,7 +21,7 @@ public class InteractionController {
     @Autowired
     private JwtService jwtService;
 
-    @PostMapping("/creat")
+    @PostMapping("/create")
     public ResponseEntity<?> createInteraction(@RequestBody InteractionModel interactionModel,
                                                @RequestHeader("Authorization") String token) {
         try{

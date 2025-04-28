@@ -1,5 +1,6 @@
 package com.example.demo.config.security;
 
+import com.example.demo.model.AdminModel;
 import com.example.demo.model.UserInfoModel;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -64,6 +65,16 @@ public class JwtService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+    public String generateAdminToken(AdminModel user) {
+        return Jwts.builder()
+                .setSubject(user.getEmail())
+                .setId(user.getId().toString())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setClaims(Map.of("role", "ROLE_ADMIN"))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 horas
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
 
