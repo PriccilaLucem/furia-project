@@ -3,17 +3,17 @@ package com.example.demo.graphql;
 import com.example.demo.model.*;
 import com.example.demo.repository.UserInfoRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserInfoResolverTest {
@@ -28,6 +28,8 @@ class UserInfoResolverTest {
     void testUserInfoQuery() {
         // Setup test data
         UserInfoModel user = createTestUser();
+
+        // Correct mocking - no argument matchers needed for findAll()
         when(userInfoRepository.findAll()).thenReturn(Collections.singletonList(user));
 
         // Test without filters

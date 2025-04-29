@@ -2,7 +2,6 @@ package com.example.demo.graphql;
 
 import com.example.demo.model.UserInfoModel;
 import com.example.demo.repository.UserInfoRepository;
-import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-public class UserInfoResolver implements GraphQLQueryResolver {
+public class UserInfoResolver {
     @Autowired
     private UserInfoRepository userInfoRepository;
 

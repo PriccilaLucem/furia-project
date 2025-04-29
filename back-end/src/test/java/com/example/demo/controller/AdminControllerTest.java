@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
@@ -79,17 +81,19 @@ class AdminControllerTest {
         loginDTO.setPassword("plainPassword");
 
         when(adminService.findByEmail(loginDTO.getEmail())).thenReturn(admin);
-        mockStatic(Authorization.class);
-        when(Authorization.checkPassword(loginDTO.getPassword(), admin.getPassword())).thenReturn(true);
-        when(jwtService.generateAdminToken(admin)).thenReturn("mocked-jwt-token");
+        try (MockedStatic<Authorization> mockedAuth = Mockito.mockStatic(Authorization.class)) {
+            mockedAuth.when(() -> Authorization.checkPassword(loginDTO.getPassword(), admin.getPassword()))
+                    .thenReturn(true);
+            when(jwtService.generateAdminToken(admin)).thenReturn("mocked-jwt-token");
 
-        ResponseEntity<?> response = adminController.login(loginDTO);
+            ResponseEntity<?> response = adminController.login(loginDTO);
 
-        Map<String, Object> body = (Map<String, Object>) response.getBody();
+            Map<String, Object> body = (Map<String, Object>) response.getBody();
 
-        assertEquals(200, response.getStatusCode().value());
-        assertNotNull(body);
-        assertEquals("mocked-jwt-token", body.get("token"));
+            assertEquals(200, response.getStatusCode().value());
+            assertNotNull(body);
+            assertEquals("mocked-jwt-token", body.get("token"));
+        }
     }
 
     @Test
