@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Container,
   CTAButton,
   Description,
   FeatureCard,
@@ -14,6 +13,7 @@ import {
   NavButton,
   Title,
 } from './styles';
+import { Container } from '../styles';
 
 interface navigateProps {
   to: "register" | "login" | "about" | "contact";
