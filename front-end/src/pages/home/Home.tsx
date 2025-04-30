@@ -57,7 +57,7 @@ const Home: React.FC = () => {
           </FeatureCard>
         </Features>
 
-        <CTAButton onClick={() => handleButtonClick({to:"register"})} href="#contato">Comece agora</CTAButton>
+        <CTAButton onClick={() => handleButtonClick({to:"register"})}>Comece agora</CTAButton>
 
         <Footer>
           © {new Date().getFullYear()} Projeto Fúria. Todos os direitos reservados.
