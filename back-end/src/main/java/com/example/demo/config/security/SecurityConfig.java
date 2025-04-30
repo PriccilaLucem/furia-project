@@ -24,7 +24,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
-                                "/swagger-ui/**"
+                                "/swagger-ui/**",
+                                "/actuator/health/**"
                         ).permitAll()
                         .requestMatchers("/api/v1/**").hasAnyRole("USER")
                         .requestMatchers("/graphql").hasRole("ADMIN")

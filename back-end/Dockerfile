@@ -1,10 +1,14 @@
-FROM openjdk:17-jdk-slim
+# Estágio de build
+FROM eclipse-temurin:17-jdk-jammy AS builder
+WORKDIR /workspace
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+COPY src ./src
+RUN ./mvnw clean package -DskipTests
 
-# Cria uma pasta dentro do container
+# Estágio de execução
+FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
-
-COPY target/*.jar app.jar
-
-ENV JAVA_OPTS=""
-
-ENTRYPOINT exec java $JAVA_OPTS -jar app.jar
+COPY --from=builder /workspace/target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
