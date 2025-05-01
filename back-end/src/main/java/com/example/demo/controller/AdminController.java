@@ -5,22 +5,26 @@ import com.example.demo.dto.LoginDTO;
 import com.example.demo.model.AdminModel;
 import com.example.demo.service.AdminService;
 import com.example.demo.util.Authorization;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/admin")
+@Tag(name = "Admin Management", description = "Endpoints for administrator operations")
 public class AdminController {
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
@@ -31,6 +35,46 @@ public class AdminController {
     private JwtService jwtService;
 
     @PostMapping("/create")
+    @Operation(
+        summary = "Create admin account",
+        description = "Creates a new administrator account with elevated privileges",
+        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Admin details",
+            required = true,
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = AdminModel.class)
+        )
+    ))
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "201",
+            description = "Admin created successfully",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = Map.class,
+                    example = "{\"id\": \"a1b2c3d4\", \"message\": \"Admin created!\"}")
+            )
+        ),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid request data",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = Map.class,
+                    example = "{\"message\": \"Email already registered\"}")
+            )
+        ),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal server error",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = Map.class,
+                    example = "{\"message\": \"Internal server error\"}")
+            )
+        )
+    })
     public ResponseEntity<?> create(@RequestBody AdminModel admin) {
         logger.info("Admin creation request received for email: {}", admin.getEmail());
         
@@ -53,6 +97,55 @@ public class AdminController {
         }
     }
 
+    @Operation(
+        summary = "Admin login",
+        description = "Authenticates administrator and returns JWT token",
+        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Login credentials",
+            required = true,
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = LoginDTO.class)
+        )
+    ))
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "Login successful",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = Map.class,
+                    example = "{\"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"}")
+            )
+        ),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid credentials",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = Map.class,
+                    example = "{\"message\": \"Invalid credentials!\"}")
+            )
+        ),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = Map.class,
+                    example = "{\"message\": \"Invalid credentials!\"}")
+            )
+        ),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal server error",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = Map.class,
+                    example = "{\"message\": \"Internal server error\"}")
+            )
+        )
+    })
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO login) {
         logger.info("Login attempt for email: {}", login.getEmail());
