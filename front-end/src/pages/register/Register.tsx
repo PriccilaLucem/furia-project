@@ -4,22 +4,52 @@ import { Title, InfoText } from '../styles';
 import Form from '../../components/Form';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import { toast } from 'react-toastify';
+import api from '../../util/axios';
+import { useNavigate } from 'react-router';
+import LoginResponse from './interface';
 const Register: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
+    confirmPassword: '',
+    phone: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate('/login');
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Dados de registro:', formData);
-    alert('Registro realizado com sucesso!');
-    setFormData({ name: '', email: '', password: '' });
+    setFormData({ name: '', email: '', password: '', phone: '', confirmPassword: '' });
+    if (formData.password !== formData.confirmPassword) {
+      toast.error('As senhas não coincidem');
+      return;
+    }
+    api.post<LoginResponse>("/user/create", formData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        console.log('Registro bem-sucedido:', response.data);
+        toast.success('Registro realizado com sucesso!');
+        setFormData({ name: '', email: '', password: '', phone: '', confirmPassword: '' });
+        navigate('/');
+      }
+      )
+      .catch((error) => {
+        console.error('Erro no registro:', error);
+        toast.error('Erro ao registrar. Verifique seus dados.');
+      }
+      );
   };
 
   return (
@@ -50,9 +80,26 @@ const Register: React.FC = () => {
           onChange={handleChange} 
           required 
         />
+        <Input
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirme sua senha"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          type="text"
+          name="phone"
+          placeholder="Seu telefone"
+          value={formData.phone}
+          onChange={handleChange}
+          required
+        />
         <Button type="submit">Registrar</Button>
+        
       </Form>
-      <InfoText>Já possui uma conta? <a href="/login">Faça login</a></InfoText>
+      <InfoText onClick={handleNavigate}>Já possui uma conta? Faça login</InfoText>
     </RegisterContainer>
   );
 };
