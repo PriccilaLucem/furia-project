@@ -18,11 +18,31 @@ public class AddressService {
     private UserInfoRepository userInfoRepository;
 
     public Long save(AddressModel addressModel, UUID userId) {
+        validateAddress(addressModel);
+        UserInfoModel user = userInfoRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Invalid user id"));
+        
+        if (user.getAddress() != null && user.getAddress().getId() != null) {
+            throw new RuntimeException("Usuário já possui um endereço cadastrado. Não é permitido cadastrar mais de um.");
+        }
+        
         addressModel.setId(addressRepository.save(addressModel).getId());
-        UserInfoModel user = userInfoRepository.findById(userId).orElseThrow(() -> new RuntimeException("Invalid user id"));
-        user.addAddress(addressModel);
+        user.setAddress(addressModel);
         userInfoRepository.save(user);
         return addressModel.getId();
     }
-
+    public void validateAddress(AddressModel addressModel) {
+        if (addressModel.getCity() == null || addressModel.getCity().isEmpty()) {
+            throw new RuntimeException("City cannot be null or empty");
+        }
+        if (addressModel.getState() == null || addressModel.getState().isEmpty()) {
+            throw new RuntimeException("State cannot be null or empty");
+        }
+        if (addressModel.getZip() == null || addressModel.getZip().isEmpty()) {
+            throw new RuntimeException("Zip code cannot be null or empty");
+        }
+        if (addressModel.getCountry() == null || addressModel.getCountry().isEmpty()) {
+            throw new RuntimeException("Street cannot be null or empty");
+        }
+    }
 }

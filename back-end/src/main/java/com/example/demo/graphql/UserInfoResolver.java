@@ -29,7 +29,7 @@ public class UserInfoResolver {
                         matches &= user.getFansScore() != null && user.getFansScore() <= fansScoreMax;
                     }
                     if (city != null) {
-                        matches &= user.getAddresses().stream().anyMatch(address -> city.equalsIgnoreCase(address.getCity()));
+                        matches &= user.getAddress() != null && user.getAddress().getCity() != null && user.getAddress().getCity().equalsIgnoreCase(city);
                     }
                     if (alreadyWentToFuriaEvent != null) {
                         matches &= user.getInteraction() != null && alreadyWentToFuriaEvent.equals(user.getInteraction().getAlreadyWentToFuriaEvent());

@@ -71,7 +71,7 @@ class UserInfoResolverTest {
         address.setZip("00000-000");
         address.setCountry("TestCountry");
         address.setUser(user);
-        user.getAddresses().add(address);
+        user.setAddress(address);
 
         return user;
     }

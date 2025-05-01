@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -34,10 +32,6 @@ public class UserInfoModel {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "userInfo")
     private InteractionModel interaction;
 
-    @OneToMany(mappedBy = "user")
-    private Set<AddressModel> addresses = new HashSet<>();
-
-    public void addAddress(AddressModel address) {
-        this.addresses.add(address);
-    }
+    @OneToOne(mappedBy = "user")
+    private AddressModel address;
 }

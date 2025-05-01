@@ -22,7 +22,8 @@ public class AddressModel {
     private String zip;
     private String country;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(name = "user_id")
     private  UserInfoModel user;
 
 }
