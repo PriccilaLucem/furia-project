@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.demo.config.security.JwtService;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -35,17 +36,26 @@ public class UserInfoController {
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO login) {
-        try{
+        try {
             UserInfoModel user = userInfoService.getByEmail(login.getEmail());
-            if(!Authorization.checkPassword(login.getPassword(), user.getPassword())){
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials"));
+            
+            if (!Authorization.checkPassword(login.getPassword(), user.getPassword())) {
+                Logger.getLogger(UserInfoController.class.getName()).warning("Invalid credentials");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                     .body(Map.of("error", "Invalid credentials"));
             }
+    
             String token = jwtService.generateToken(user);
-            return ResponseEntity.status(HttpStatus.OK).body(Map.of("token", token));
-        }catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials"));
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
+            return ResponseEntity.ok(Map.of("token", token));
+    
+        } catch (RuntimeException e) {
+            Logger.getLogger(UserInfoController.class.getName()).warning(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                 .body(Map.of("error", "Invalid credentials"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body(Map.of("error", e.getMessage()));
         }
     }
+    
 }

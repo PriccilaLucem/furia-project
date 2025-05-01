@@ -22,6 +22,7 @@ public class UserInfoModel {
     UUID id;
     String password;
     String name;
+    @Column(unique = true)
     String email;
     String phone;
 

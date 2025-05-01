@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: spring-boot-app
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/mydatabase?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_PROFILES_ACTIVE: dev
+      JWT_SECRET: c+vMnNk+2raIHNreiYMz/wbb2E3a0eYw0aQM7rYbYXw=
+      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      SPRING_DEVTOOLS_LIVERELOAD_ENABLED: "true"
+      LOGGING_LEVEL_COM_EXAMPLE_DEMO_CONFIG_SECURITY: DEBUG
+      LOGGING_LEVEL_ROOT: INFO
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /workspace
+        - action: rebuild
+          path: Dockerfile
+    volumes:
+      - .:/workspace
+      - ~/.m2:/root/.m2
+      - /workspace/target
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydatabase
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 10s
+      retries: 20
+    restart: unless-stopped
+
+volumes:
+  mysql_data:

@@ -1,14 +1,10 @@
-# Estágio de build
-FROM eclipse-temurin:17-jdk-jammy AS builder
+# Development stage
+FROM eclipse-temurin:17-jdk-jammy AS development
 WORKDIR /workspace
+
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
-COPY src ./src
-RUN ./mvnw clean package -DskipTests
 
-# Estágio de execução
-FROM eclipse-temurin:17-jre-jammy
-WORKDIR /app
-COPY --from=builder /workspace/target/*.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+COPY src ./src
+
+CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.profiles=dev", "-Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"]
