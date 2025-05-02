@@ -6,6 +6,7 @@ import Register from "./pages/register/Register";
 import Login from "./pages/login/Login";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FullRegistrationPage from "./pages/fullRegistrationPage/FullRegistrationPage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forms" element={<FullRegistrationPage/>} />
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
 

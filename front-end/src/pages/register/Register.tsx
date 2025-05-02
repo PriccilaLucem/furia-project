@@ -7,7 +7,7 @@ import Button from '../../components/Button';
 import { toast } from 'react-toastify';
 import api from '../../util/axios';
 import { useNavigate } from 'react-router';
-import LoginResponse from './interface';
+import LoginResponse from '../login/interface';
 const Register: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
