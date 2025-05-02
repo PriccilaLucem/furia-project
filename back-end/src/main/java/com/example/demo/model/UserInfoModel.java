@@ -26,12 +26,12 @@ public class UserInfoModel {
 
     private Integer fansScore = 0;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userInfo")
     private SocialMediaModel socialMedia;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "userInfo")
     private InteractionModel interaction;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userInfo")
     private AddressModel address;
 }

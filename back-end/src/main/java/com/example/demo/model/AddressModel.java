@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,7 +25,7 @@ public class AddressModel {
     private String country;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
-    private  UserInfoModel user;
+    @JsonIgnore
+    private  UserInfoModel userInfo;
 
 }

@@ -62,7 +62,6 @@ class UserInfoResolverTest {
         interaction.setAlreadyWentToFuriaEvent(true);
         interaction.setBoughtItems(false);
         interaction.setEFuriaClubMember(true);
-        interaction.setUserInfo(user);
         user.setInteraction(interaction);
 
         AddressModel address = new AddressModel();
@@ -70,7 +69,6 @@ class UserInfoResolverTest {
         address.setState("TS");
         address.setZip("00000-000");
         address.setCountry("TestCountry");
-        address.setUser(user);
         user.setAddress(address);
 
         return user;
