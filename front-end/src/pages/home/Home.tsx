@@ -16,7 +16,7 @@ import {
 import { Container } from '../styles';
 
 interface navigateProps {
-  to: "register" | "login" | "about" | "contact";
+  to: "register" | "login" | "about" | "contact" | "admin-register" | "admin-login";
 }
 
 const Home: React.FC = () => {
@@ -31,6 +31,9 @@ const Home: React.FC = () => {
         <Nav>
             <NavButton onClick={() => handleButtonClick({to:"about"})}>Sobre</NavButton>
             <NavButton onClick={() => handleButtonClick({to:"contact"})}>Contato</NavButton>
+            <NavButton onClick={() => handleButtonClick({to:"admin-login"})}>Admin login</NavButton>
+            <NavButton onClick={() => handleButtonClick({to:"admin-register"})}>Admin Register</NavButton>
+
         </Nav>
       </Header>
 

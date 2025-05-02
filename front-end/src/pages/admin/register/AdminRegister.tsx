@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import { RegisterContainer } from './styles';
-import { Title, InfoText } from '../styles';
-import Form from '../../components/Form';
-import Input from '../../components/Input';
-import Button from '../../components/Button';
+import { Title, InfoText } from '../../styles';
+import Form from '../../../components/Form';
+import Input from '../../../components/Input';
+import Button from '../../../components/Button';
 import { toast } from 'react-toastify';
-import api from '../../util/axios';
+import api from '../../../util/axios';
 import { useNavigate } from 'react-router';
 import LoginResponse from '../login/interface';
-const Register: React.FC = () => {
+
+const AdminRegister: React.FC = () => {
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
     password: '',
     confirmPassword: '',
-    phone: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +31,7 @@ const Register: React.FC = () => {
       toast.error('As senhas não coincidem');
       return;
     }
-    api.post<LoginResponse>("/user/create", formData, {
+    api.post<LoginResponse>("/admin/create", formData, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -40,8 +39,8 @@ const Register: React.FC = () => {
       .then((response) => {
         console.log('Registro bem-sucedido:', response.data);
         toast.success('Registro realizado com sucesso!');
-        setFormData({ name: '', email: '', password: '', phone: '', confirmPassword: '' });
-        navigate('/');
+        setFormData({ email: '', password: '',  confirmPassword: '' });
+        navigate('/admin-login');
       }
       )
       .catch((error) => {
@@ -53,16 +52,8 @@ const Register: React.FC = () => {
 
   return (
     <RegisterContainer>
-      <Title>Crie sua conta</Title>
+      <Title>Crie seu usuario Admin</Title>
       <Form onSubmit={handleSubmit}>
-        <Input 
-          type="text" 
-          name="name" 
-          placeholder="Seu nome" 
-          value={formData.name} 
-          onChange={handleChange} 
-          required 
-        />
         <Input 
           type="email" 
           name="email" 
@@ -87,14 +78,6 @@ const Register: React.FC = () => {
           onChange={handleChange}
           required
         />
-        <Input
-          type="text"
-          name="phone"
-          placeholder="Seu telefone"
-          value={formData.phone}
-          onChange={handleChange}
-          required
-        />
         <Button type="submit">Registrar</Button>
         
       </Form>
@@ -103,4 +86,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default AdminRegister;
