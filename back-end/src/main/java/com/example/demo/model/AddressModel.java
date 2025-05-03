@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -24,8 +25,7 @@ public class AddressModel {
     private String zip;
     private String country;
 
-    @OneToOne
     @JsonIgnore
-    private  UserInfoModel userInfo;
-
+    @OneToOne(mappedBy = "address", fetch = FetchType.LAZY)
+    private UserInfoModel userInfo;
 }

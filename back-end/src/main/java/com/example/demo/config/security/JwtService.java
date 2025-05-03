@@ -42,14 +42,15 @@ public class JwtService {
         return buildToken(admin.getEmail(), admin.getId().toString(), "ROLE_ADMIN");
     }
 
-    private String buildToken(String subject, String id, String role) {
+    private String buildToken(String 
+    subject, String id, String role) {
         return Jwts.builder()
                 .setSubject(subject)
                 .setId(id)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .claim("role", role)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(secretKey) // Usa a chave diretamente
+                .signWith(secretKey)
                 .compact();
     }
 

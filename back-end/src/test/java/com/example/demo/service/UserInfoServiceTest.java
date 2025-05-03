@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.model.UserInfoModel;
 import com.example.demo.repository.UserInfoRepository;
-import com.example.demo.util.Authorization;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

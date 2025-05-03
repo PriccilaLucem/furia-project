@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -20,10 +21,10 @@ public class InteractionModel {
     private Long id;
 
     Boolean alreadyWentToFuriaEvent;
-    Boolean BoughtItems;
+    Boolean boughtItems;
     Boolean eFuriaClubMember;
 
-    @OneToOne
     @JsonIgnore
+    @OneToOne(mappedBy = "interaction", fetch = FetchType.LAZY)
     private UserInfoModel userInfo;
 }

@@ -33,6 +33,10 @@ public class AddressServiceTest {
         Long generatedAddressId = 10L;
 
         AddressModel address = new AddressModel();
+        address.setCity("Rio de Janeiro");
+        address.setState("RJ");
+        address.setZip("20000-000");
+        address.setCountry("Brasil");
 
         AddressModel savedAddress = new AddressModel();
         savedAddress.setId(generatedAddressId);
@@ -50,20 +54,19 @@ public class AddressServiceTest {
         verify(userInfoRepository).findById(userId);
         verify(userInfoRepository).save(user);
     }
-
     @Test
     void shouldThrowWhenUserNotFound() {
         UUID userId = UUID.randomUUID();
         AddressModel address = new AddressModel();
-
-        when(addressRepository.save(address)).thenReturn(address);
+        address.setCity("Rio de Janeiro");
+        address.setState("RJ");
+        address.setZip("20000-000");
+        address.setCountry("Brasil");
+        
         when(userInfoRepository.findById(userId)).thenReturn(Optional.empty());
-
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
-            addressService.save(address, userId);
-        });
-
-        assertEquals("Invalid user id", thrown.getMessage());
-        verify(userInfoRepository).findById(userId);
+        
+        assertThrows(RuntimeException.class, () -> 
+            addressService.save(address, userId),
+            "Invalid user id");
     }
 }

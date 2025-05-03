@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+import org.hibernate.annotations.UuidGenerator;
+
 @Entity
 @Table(name = "admin")
 @Getter
@@ -16,7 +18,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AdminModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator(style = UuidGenerator.Style.TIME)
+    @Column(columnDefinition = "BINARY(16)", updatable = false, nullable = false)
     private UUID id;
 
     private String email;

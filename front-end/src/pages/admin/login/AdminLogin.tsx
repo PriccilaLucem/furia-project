@@ -18,7 +18,7 @@ const AdminLogin: React.FC = () => {
   const navigate = useNavigate();
   
   const handleNavigate = () => {
-    navigate('/register');
+    navigate('/admin-register');
   };
 
   const handleSubmit = (e: React.FormEvent) => {

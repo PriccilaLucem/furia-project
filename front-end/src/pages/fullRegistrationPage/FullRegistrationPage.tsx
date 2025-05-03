@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   FormWrapper,
   StyledForm,
@@ -26,14 +25,12 @@ const defaultValues: FormData = {
     riotUsername: '',
     followingFuria: false,
   },
-  addresses: [
-    {
+  address: {
       city: '',
       state: '',
       zip: '',
       country: '',
     },
-  ],
   interaction: {
     boughtItems: false,
     efuriaClubMember: false,
@@ -51,22 +48,13 @@ const validationSchema = yup.object().shape({
     riotUsername: yup.string().required('Riot username is required'),
     followingFuria: yup.boolean().default(false),
   }),
-  addresses: yup.array().of(
-    yup.object().shape({
+  address: yup.object().shape({
       city: yup.string().required('City is required'),
       state: yup.string().required('State is required'),
       zip: yup.string().required('ZIP code is required'),
       country: yup.string().required('Country is required'),
     }).required('Address is required'),
-  ).default([
-    {
-      city: '',
-      state: '',
-      zip: '',
-      country: '',
-      user: '',
-    },
-  ]),
+    
   interaction: yup.object().shape({
     boughtItems: yup.boolean().default(false),
     efuriaClubMember: yup.boolean().default(false),
@@ -79,89 +67,45 @@ export default function FullRegistrationPage() {
     defaultValues,
     resolver: yupResolver(validationSchema),
   });
-  const [formData] = useState({
-    socialMedia: {
-      twitterHandle: '',
-      instagramHandle: '',
-      tiktokHandle: '',
-      twitchUsername: '',
-      steamUsername: '',
-      riotUsername: '',
-      followingFuria: false,
-      userInfo: '',
-    },
-    addresses: [
-      {
-        city: '',
-        state: '',
-        zip: '',
-        country: '',
-        user: '',
-      },
-    ],
-    interaction: {
-      alreadyWentToFuriaEvent: false,
-      boughtItems: false,
-      efuriaClubMember: false,
-    },
-  });
 
 
-  const handleInteractionSubmit = async (token: string) => {
-    try {
-      await api.post('/interaction/create', formData.interaction, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      toast.success('Interação cadastrada com sucesso!');
-    } catch {
-      console.error('Erro ao cadastrar interação');
-      toast.error('Erro ao cadastrar interação');
-    }
-  };
-
-  const handleSocialMediaSubmit = async (token: string) => {
-    try {
-      await api.post('/social-media/create', formData.socialMedia, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      toast.success('Redes sociais cadastradas com sucesso!');
-    } catch {
-      console.error('Erro ao cadastrar redes sociais');
-      toast.error('Erro ao cadastrar redes sociais');
-    }
-  };
-  const handleAddressSubmit = async (token: string) => {
-    try {
-      await api.post('/address', formData.addresses[0], {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      toast.success('Endereço cadastrado com sucesso!');
-    } catch  {
-      toast.error('Erro ao cadastrar endereço');
-    }
-  };
-
-  const onSubmit = async () => {
+  const onSubmit = async (data: FormData) => {
     const token = localStorage.getItem('token') || '';
     if (!token) {
       toast.error('Token não encontrado. Faça login novamente.');
       return;
     }
-    await handleSocialMediaSubmit(token);
-    await handleAddressSubmit(token);
-    await handleInteractionSubmit(token);
-    toast.success('Cadastro completo enviado com sucesso!');
-    console.log('Cadastro completo enviado');
+  
+    try {
+      await api.post('/social-media/create', data.socialMedia, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      await api.post('/address', data.address, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      await api.post('/interaction/create', data.interaction, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      toast.success('Cadastro completo enviado com sucesso!');
+      console.log('Cadastro completo enviado:', data);
+    } catch (error) {
+      toast.error('Erro ao enviar o cadastro completo.');
+      console.error(error);
+    }
   };
+  
 
   return (
     <FormWrapper>
@@ -245,40 +189,40 @@ export default function FullRegistrationPage() {
         <Fieldset>
           <Legend>Endereço</Legend>
           <Controller
-            name="addresses.0.city"
+            name="address.city"
             control={control}
             render={({ field }) => (
               <Input {...field} placeholder="Cidade" />
             )}
           />
-          {errors.addresses?.[0]?.city && <span>{errors.addresses[0].city.message}</span>}
+          {errors.address?.city && <span>{errors.address.city.message}</span>}
 
           <Controller
-            name="addresses.0.state"
+            name="address.state"
             control={control}
             render={({ field }) => (
               <Input {...field} placeholder="Estado" />
             )}
           />
-          {errors.addresses?.[0]?.state && <span>{errors.addresses[0].state.message}</span>}
+          {errors.address?.state && <span>{errors.address.state.message}</span>}
 
           <Controller
-            name="addresses.0.zip"
+            name="address.zip"
             control={control}
             render={({ field }) => (
               <Input {...field} placeholder="CEP" />
             )}
           />
-          {errors.addresses?.[0]?.zip && <span>{errors.addresses[0].zip.message}</span>}
+          {errors.address?.zip && <span>{errors.address.zip.message}</span>}
 
           <Controller
-            name="addresses.0.country"
+            name="address.country"
             control={control}
             render={({ field }) => (
               <Input {...field} placeholder="País" />
             )}
           />
-          {errors.addresses?.[0]?.country && <span>{errors.addresses[0].country.message}</span>}
+          {errors.address?.country && <span>{errors.address.country.message}</span>}
 
         </Fieldset>
 

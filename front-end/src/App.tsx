@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import FullRegistrationPage from "./pages/fullRegistrationPage/FullRegistrationPage";
 import AdminLogin from "./pages/admin/login/AdminLogin";
 import AdminRegister from "./pages/admin/register/AdminRegister";
+import UserInfoPage from "./pages/userInfo/UserInfo";
 
 function App() {
   return (
@@ -22,6 +23,8 @@ function App() {
         <Route path="/forms" element={<FullRegistrationPage/>} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin-register" element={<AdminRegister />} />
+        <Route path="/admin-page" element={<UserInfoPage/>} />
+
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
 

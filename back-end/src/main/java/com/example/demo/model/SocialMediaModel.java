@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -26,7 +27,7 @@ public class SocialMediaModel {
     String riotUsername;
     Boolean followingFuria;
 
-    @OneToOne
     @JsonIgnore
+    @OneToOne(mappedBy = "socialMedia", fetch = FetchType.LAZY)
     private UserInfoModel userInfo;
 }

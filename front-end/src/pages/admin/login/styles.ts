@@ -5,6 +5,3 @@ export const LoginContainer = styled.div`
   margin: 0 auto;
   padding: 3rem 2rem;
 `;
-export default interface LoginResponse {
-    token: string;
-}

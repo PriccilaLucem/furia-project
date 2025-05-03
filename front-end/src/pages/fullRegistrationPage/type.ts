@@ -8,12 +8,12 @@ export type FormData = {
     riotUsername: string;
     followingFuria: boolean;
   };
-  addresses: {
+  address: {
     city: string;
     state: string;
     zip: string;
     country: string;
-  }[];
+  };
   interaction: {
     boughtItems: boolean;
     efuriaClubMember: boolean;

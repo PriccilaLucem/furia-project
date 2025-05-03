@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -21,6 +22,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import java.util.Arrays;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
     @Autowired
     private JwtService jwtService;
@@ -34,6 +36,8 @@ public class SecurityConfig {
                 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/v1/user/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/admin/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/user/get-all").hasRole("ADMIN")
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
@@ -41,11 +45,13 @@ public class SecurityConfig {
                                 "/actuator/health/**"
                                 
                         ).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/interacion/create").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/address").hasRole("USER")
                         .requestMatchers(HttpMethod.POST, "/api/v1/social-media/create").hasRole("USER")
 
-                        .requestMatchers("/graphql").hasAuthority("ROLE_ADMIN")
-                        .anyRequest().authenticated()
+                        .requestMatchers("/graphql").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/graphql").permitAll()
+                                                .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
 
@@ -61,12 +67,12 @@ public class SecurityConfig {
         configuration.setAllowCredentials(true);
         configuration.setExposedHeaders(Arrays.asList("Authorization"));
         configuration.setMaxAge(3600L); 
-
+        
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-    // Add this to your SecurityConfig if not already present
+
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
