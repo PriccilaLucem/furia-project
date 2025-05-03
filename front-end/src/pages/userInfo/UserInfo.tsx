@@ -13,6 +13,7 @@ import {
   Checkbox,
 } from './styles';
 import api from '../../util/axios';
+import { User } from './interface';
 
 export default function UserInfo() {
   const [filters, setFilters] = useState({
@@ -25,7 +26,7 @@ export default function UserInfo() {
     eFuriaClubMember: false,
   });
 
-  const [data, setData] = useState<typeof UserInfo[]>([]);
+  const [data, setData] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -80,15 +81,12 @@ export default function UserInfo() {
         },
       });
       console.log('Response:', response.data);
-      setData(response.data as typeof UserInfo[]);
-    } catch (err: unknown) {
-      // Tratando o erro corretamente
-      if (err instanceof Error) {
-          setError(err.message || 'Erro desconhecido');
-    } else {
-        setError('Erro desconhecido');
-      }
-    } finally {
+      setData(response.data as User[]);
+    } catch (err) {
+      const error = err as Error;
+      setError(error.message || 'Erro desconhecido');
+    }
+     finally {
       setLoading(false);
     }
   };
@@ -180,7 +178,7 @@ export default function UserInfo() {
       {loading && <Loading>Carregando...</Loading>}
       {error && <Error>Erro: {error}</Error>}
 
-  {data && Array.isArray(data) && data.map((user: any) => (
+      {data && data.map((user) => (
   <UserCard key={user.id}>
     <p><strong>Nome:</strong> {user.name}</p>
     <p><strong>Estado:</strong> {user.address?.state}</p>
