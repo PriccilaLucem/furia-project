@@ -36,12 +36,13 @@ public class userInfoGetController {
         @RequestParam(required = false) Integer fansScoreMin,
         @RequestParam(required = false) Integer fansScoreMax,
         @RequestParam(required = false) String city,
+        @RequestParam(required = false) String state,
         @RequestParam(required = false) Boolean alreadyWentToFuriaEvent,
         @RequestParam(required = false) Boolean boughtItems,
         @RequestParam(required = false) Boolean eFuriaClubMember
     ) {
         List<UserInfoModel> users = userInfoRepository.findWithFilters(
-            fansScoreMin, fansScoreMax, city, alreadyWentToFuriaEvent, boughtItems, eFuriaClubMember
+            fansScoreMin, fansScoreMax, city, state, alreadyWentToFuriaEvent, boughtItems, eFuriaClubMember
         );
         return ResponseEntity.ok(users);
     }

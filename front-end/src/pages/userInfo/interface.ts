@@ -4,6 +4,7 @@ export interface UserInfo {
     fansScore?: number;
     address?: {
       city?: string;
+      state?: string;
     };
     interaction?: {
       alreadyWentToFuriaEvent?: boolean;

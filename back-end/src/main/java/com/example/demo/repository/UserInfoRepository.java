@@ -21,18 +21,20 @@ public interface UserInfoRepository extends JpaRepository<UserInfoModel, UUID>, 
     "(:fansScoreMin IS NULL OR u.fansScore IS NULL OR u.fansScore >= :fansScoreMin) AND " +
     "(:fansScoreMax IS NULL OR u.fansScore IS NULL OR u.fansScore <= :fansScoreMax) AND " +
     "(:city IS NULL OR a IS NULL OR LOWER(a.city) LIKE LOWER(CONCAT('%', :city, '%'))) AND " +
+    "(:state IS NULL OR a IS NULL OR LOWER(a.state) LIKE LOWER(CONCAT('%', :state, '%'))) AND " +
     "(:alreadyWentToFuriaEvent IS NULL OR i IS NULL OR i.alreadyWentToFuriaEvent = :alreadyWentToFuriaEvent) AND " +
     "(:boughtItems IS NULL OR i IS NULL OR i.boughtItems = :boughtItems) AND " +
     "(:eFuriaClubMember IS NULL OR i IS NULL OR i.eFuriaClubMember = :eFuriaClubMember)")
-
     List<UserInfoModel> findWithFilters(
         @Param("fansScoreMin") Integer fansScoreMin,
         @Param("fansScoreMax") Integer fansScoreMax,
         @Param("city") String city,
+        @Param("state") String state,
         @Param("alreadyWentToFuriaEvent") Boolean alreadyWentToFuriaEvent,
         @Param("boughtItems") Boolean boughtItems,
         @Param("eFuriaClubMember") Boolean eFuriaClubMember
     );
+
 
     @Query("SELECT u FROM UserInfoModel u " +
            "LEFT JOIN FETCH u.address " +

@@ -19,12 +19,13 @@ export default function UserInfo() {
     fansScoreMin: '',
     fansScoreMax: '',
     city: '',
+    state: '',
     alreadyWentToFuriaEvent: false,
     boughtItems: false,
     eFuriaClubMember: false,
   });
 
-  const [data, setData] = useState<UserInfo[]>([]);
+  const [data, setData] = useState<typeof UserInfo[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -44,6 +45,7 @@ export default function UserInfo() {
     if (filters.alreadyWentToFuriaEvent) params.append('alreadyWentToFuriaEvent', 'true');
     if (filters.boughtItems) params.append('boughtItems', 'true');
     if (filters.eFuriaClubMember) params.append('eFuriaClubMember', 'true');
+    if (filters.state) params.append('state', filters.state);
     return params.toString();
   };
 
@@ -78,12 +80,12 @@ export default function UserInfo() {
         },
       });
       console.log('Response:', response.data);
-      setData(response.data as UserInfo[]);
+      setData(response.data as typeof UserInfo[]);
     } catch (err: unknown) {
       // Tratando o erro corretamente
       if (err instanceof Error) {
-        setError(err.message || 'Erro desconhecido');
-      } else {
+          setError(err.message || 'Erro desconhecido');
+    } else {
         setError('Erro desconhecido');
       }
     } finally {
@@ -115,6 +117,15 @@ export default function UserInfo() {
             value={filters.fansScoreMax}
             onChange={handleChange}
           />
+        </InputGroup>
+        <InputGroup>
+          <Label>Estado</Label>
+            <Input
+              type="text"
+              name="state"
+              value={filters.state}
+              onChange={handleChange}
+            />
         </InputGroup>
 
         <InputGroup>
@@ -172,6 +183,7 @@ export default function UserInfo() {
   {data && Array.isArray(data) && data.map((user: any) => (
   <UserCard key={user.id}>
     <p><strong>Nome:</strong> {user.name}</p>
+    <p><strong>Estado:</strong> {user.address?.state}</p>
     <p><strong>Email:</strong> {user.email}</p>
     <p><strong>Score:</strong> {user.fansScore ?? 'N/A'}</p>
     <p><strong>Cidade:</strong> {user.address?.city ?? 'N/A'}</p>
