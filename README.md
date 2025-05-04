@@ -34,7 +34,7 @@ Para facilitar a execução do projeto, você pode usar o **Docker Compose**, qu
 
 1. Clone o repositório:
     ```bash
-    git clone <URL do repositório>
+    git clone https://github.com/PriccilaLucem/furia-project.git
     cd fury-project
     ```
 
